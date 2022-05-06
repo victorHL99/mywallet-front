@@ -1,15 +1,33 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 
 import styled from "styled-components";
+import Loading from "../Loading/Loading";
 
-export default function SignIn() {
+export default function Login () {
+    const [CarregarLogin, setCarregarLogin] = React.useState("Entrar");
+
+    async function tentarLogin() {
+        
+        /* const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        } */
+        
+
+        setCarregarLogin(<Loading/>);
+
+    }
+
     return(
         <Main>
             <Logo>MyWallet</Logo>
             <Input type="text" placeholder="E-mail"/>
             <Input type="password" placeholder="Senha"/>
-            <Button ><p>Entrar</p></Button>
-            <Cadastrar>Primeira vez? Cadastre-se</Cadastrar>
+            <Button onClick={tentarLogin}><p>{CarregarLogin}</p></Button>
+            <Cadastrar><Navegar to="/registrar" ><p>Primeira vez? Cadastre-se</p></Navegar></Cadastrar>
         </Main>
     )
 }
@@ -118,5 +136,18 @@ const Cadastrar = styled.div`
     font-weight: 700;
     font-size: 15px;
     line-height: 18px;
-`
 
+    p{
+        color: #FFFFFF;
+        font-family: 'Raleway', sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 18px;
+        text-decoration: none;
+    }
+`
+const Navegar = styled(Link)`
+    text-decoration: none;
+
+`
