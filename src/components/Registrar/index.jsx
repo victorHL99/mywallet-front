@@ -7,21 +7,47 @@ import Loading from "../Loading/Loading";
 
 export default function Registrar() {
     const [CarregarRegistro, setCarregarRegistro] = React.useState("Cadastrar");
+    const [nome, setNome] = React.useState("");
+    const [email, setEmail] = React.useState("");
+    const [senha, setSenha] = React.useState("");
+    const [confirmarSenha, setConfirmarSenha] = React.useState("");
+    const [ativarBotao, setAtivarBotao] = React.useState(false);
 
-    
-    async function tentarRegistrar() {
+    const navegar = useNavigate();
+
+    async function enviarRegistro() {
         setCarregarRegistro(<Loading/>);
+        setAtivarBotao(true);
 
+        const URL_REGISTRO = "http://localhost:5000/registrar";
+        const promise = axios.post(URL_REGISTRO, {
+            nome,
+            email,
+            senha,
+            confirmarSenha
+        });
+
+        promise.then(response => {
+            console.log(response.data);
+            navegar("/");
+        });
+        promise.catch(error => {
+            console.log(error.response);
+            alert("Dados Inválidos, Preencha Novamente!")
+            setAtivarBotao(false)
+            setCarregarRegistro("Cadastrar")
+        })
+        
     }
 
     return (
         <Main>
             <Logo>MyWallet</Logo>
-            <Input type="text" placeholder="Nome"></Input>
-            <Input type="text" placeholder="E-mail"></Input>
-            <Input type="password" placeholder="Senha"></Input>
-            <Input type="password" placeholder="Confirmar senha"></Input>
-            <ButtonCadastrar onClick={tentarRegistrar}><p>{CarregarRegistro}</p></ButtonCadastrar>
+            <Input type="text" placeholder="Nome" disable={ativarBotao} value={nome} onChange={(e)=>setNome(e.target.value)}></Input>
+            <Input type="text" placeholder="E-mail" disable={ativarBotao} value={email} onChange={(e)=>setEmail(e.target.value)}></Input>
+            <Input type="password" placeholder="Senha" disable={ativarBotao} value={senha} onChange={(e)=>setSenha(e.target.value)}></Input>
+            <Input type="password" placeholder="Confirmar senha" disable={ativarBotao} value={confirmarSenha} onChange={(e)=>setConfirmarSenha(e.target.value)}></Input>
+            <ButtonCadastrar onClick={enviarRegistro}><p>{CarregarRegistro}</p></ButtonCadastrar>
             <Login><Navegar to="/"><p>Já tem uma conta? Faça login!</p></Navegar></Login>
         </Main>
     )
@@ -75,7 +101,7 @@ const Input = styled.input`
     &::placeholder {
         position: relative;
         color: #000000;
-        width: 60px;
+        width: 162px;
         height: 23px;
         left: 15px;
         font-family:'Raleway', sans-serif;

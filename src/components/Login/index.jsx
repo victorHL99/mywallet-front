@@ -26,8 +26,16 @@ export default function Login () {
             <Logo>MyWallet</Logo>
             <Input type="text" placeholder="E-mail"/>
             <Input type="password" placeholder="Senha"/>
-            <Button onClick={tentarLogin}><p>{CarregarLogin}</p></Button>
-            <Cadastrar><Navegar to="/registrar" ><p>Primeira vez? Cadastre-se</p></Navegar></Cadastrar>
+            <Navegar to="/paginaPrincipal">
+                <Button onClick={tentarLogin}>
+                    <p>{CarregarLogin}</p>
+                </Button>
+            </Navegar>
+            <Cadastrar>
+                <Navegar to="/registrar" >
+                    <p>Primeira vez? Cadastre-se</p>
+                </Navegar>
+            </Cadastrar>
         </Main>
     )
 }
@@ -104,6 +112,7 @@ const Button = styled.button`
     border: 1px solid #A328D6;
     width: 326px;
     height: 46px;
+    left:23px;
     top: 383px;
     cursor: pointer;
 
