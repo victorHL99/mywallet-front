@@ -10,10 +10,10 @@ import NovaSaida from "../NovaSaida";
 import UsuarioContext from "../../context/UsuarioContext";
 
 export default function App(){
-    const [usuario, setUsuario] = React.useState(null);
-    const [token, setToken] = React.useState("");
+    const [user, setUser] = React.useState(null);
+    const [dados, setDados] = React.useState(null);
     return (
-        <UsuarioContext.Provider value={{usuario,setUsuario}}>
+        <UsuarioContext.Provider value={{user,setUser,dados,setDados}}>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Login/>}/>

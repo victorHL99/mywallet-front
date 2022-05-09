@@ -14,16 +14,13 @@ export default function Login () {
     const [email , setEmail] = React.useState("");
     const [senha , setSenha] = React.useState("");
     const [ativarBotao, setAtivarBotao] = React.useState(false);
-    const {setUsuario} = React.useContext(UsuarioContext);
+    const {setUser} = React.useContext(UsuarioContext);
 
     const navegar = useNavigate();
 
     async function tentarLogin() {
         
         setCarregarLogin(<Loading/>);
-
-        
-            
         const URL_LOGIN = "http://localhost:5000/";
         const promise = axios.post(URL_LOGIN, {
             email,
@@ -31,11 +28,10 @@ export default function Login () {
         });
         promise.then((response) => {
             const {data} = response;
-            setUsuario({token: data});
-            setTimeout(()=>{navegar("/paginaPrincipal")},5000);
+            setUser({token: data});
+            navegar("/paginaPrincipal")
         });
         promise.catch((error) => {
-            console.log(error.response);
             alert("Dados Inválidos, Preencha Novamente!")
             setAtivarBotao(false);
             setCarregarLogin("Entrar");
@@ -43,17 +39,12 @@ export default function Login () {
     
 
     }
-
     return(
         <Main>
             <Logo>MyWallet</Logo>
             <Input type="text" placeholder="E-mail" disable={ativarBotao} value={email} onChange={(e)=>setEmail(e.target.value)}/>
             <Input type="password" placeholder="Senha" disable={ativarBotao} value={senha} onChange={(e)=>setSenha(e.target.value)}/>
-            <Navegar to="/paginaPrincipal">
-                <Button onClick={tentarLogin}>
-                    <p>{CarregarLogin}</p>
-                </Button>
-            </Navegar>
+            <Button onClick={tentarLogin}><p>{CarregarLogin}</p></Button>
             <Navegar to="/registrar" >
                 <Cadastrar>
                     <p>Primeira vez? Cadastre-se</p>

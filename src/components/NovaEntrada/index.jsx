@@ -93,6 +93,7 @@ const ButtonSalvar = styled.button`
     width: 326px;
     height: 46px;
     top: 245px;
+    left:25px;
     cursor: pointer;
 
     p{

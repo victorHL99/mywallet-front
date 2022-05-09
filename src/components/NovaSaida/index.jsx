@@ -11,7 +11,11 @@ export default function NovaEntrada() {
             <Titulo><p>Nova saída</p></Titulo>
             <Input type="text" placeholder="Valor"/>
             <Input type="text" placeholder="Descrição"/>
-            <ButtonSalvar><p>Salvar saída</p></ButtonSalvar>
+            <Navegar to="/paginaPrincipal">
+                <ButtonSalvar>
+                    <p>Salvar saída</p>
+                </ButtonSalvar>
+            </Navegar>
         </Main>
     )
 }
@@ -89,6 +93,7 @@ const ButtonSalvar = styled.button`
     width: 326px;
     height: 46px;
     top: 245px;
+    left:25px;
     cursor: pointer;
 
     p{
@@ -101,4 +106,9 @@ const ButtonSalvar = styled.button`
         line-height: 23px;
         color: #FFFFFF;
     }
+`
+
+const Navegar = styled(Link)`
+    text-decoration: none;
+
 `

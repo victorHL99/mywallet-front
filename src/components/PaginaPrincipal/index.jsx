@@ -1,31 +1,68 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect} from "react";
+import { Link,useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 import styled from "styled-components";
 
+import UsuarioContext from "../../context/UsuarioContext";
 import IconeSair from "../../assets/img/IconeSair.png";
 import Entrada from "../../assets/img/Entrada.png";
 import Saida from "../../assets/img/Saida.png";
 
 
 export default function PaginaPrincipal() {
-    return (
-        <Main>
-            <Titulo><p>Olá, Fulano</p></Titulo>
-            <ButtonSair src={IconeSair}/>
-            <TelaRegistros>
+    const {user, setUser, dados, setDados} = React.useContext(UsuarioContext);
 
-            </TelaRegistros>
-            <NovaEntrada>
-                <img src={Entrada} alt="" />
-                <p>Nova Entrada</p>
-            </NovaEntrada>
-            <NovaSaida>
-                <img src={Saida} alt="" />
-                <p>Nova Saída</p>
-            </NovaSaida>
-        </Main>
-    )
+    const navegar = useNavigate();
+
+    useEffect(() => {
+        const config ={
+            headers: {Authorization: `Bearer ${user.token}`}
+        };
+        
+        const URL_DADOS = "http://localhost:5000/paginaPrincipal";
+
+        const promise = axios.get(URL_DADOS, config);
+        promise.then((response) => {
+            const {data} = response;
+            setUser({...data, token: user.token});
+            console.log(response.data)
+            setDados(data);
+        });
+        promise.catch((error) => {
+            console.log(error.response);
+        })
+    }, []);
+    
+    if(dados === null){
+        return (
+            <Main>
+                <Titulo><p>Olá, Amigo</p></Titulo>
+                <ButtonSair src={IconeSair}/>
+                <TelaRegistros>
+    
+                </TelaRegistros>
+                <NovaEntrada onClick={()=> {navegar("/novaEntrada");}}><img src={Entrada} alt="" /><p>Nova Entrada</p></NovaEntrada>
+                <NovaSaida onClick={()=> {navegar("/novaSaida");}}><img src={Saida} alt="" /><p>Nova Saída</p></NovaSaida>
+            </Main>
+        )
+        
+
+    } else {
+        console.log(user.usuario);
+        return (
+            <Main>
+                <Titulo><p>Olá, {dados.usuario.nome} </p></Titulo>
+                <ButtonSair src={IconeSair}/>
+                <TelaRegistros>
+    
+                </TelaRegistros>
+                <NovaEntrada onClick={()=> {navegar("/novaEntrada");}}><img src={Entrada} alt="" /><p>Nova Entrada</p></NovaEntrada>
+                <NovaSaida onClick={()=> {navegar("/novaSaida");}}><img src={Saida} alt="" /><p>Nova Saída</p></NovaSaida>
+            </Main>
+        )
+    }
 }
 
 const Main = styled.div`
