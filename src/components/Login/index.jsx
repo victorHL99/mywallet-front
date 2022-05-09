@@ -1,41 +1,64 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 import styled from "styled-components";
+
+
 import Loading from "../Loading/Loading";
+import UsuarioContext from "../../context/UsuarioContext";
 
 export default function Login () {
     const [CarregarLogin, setCarregarLogin] = React.useState("Entrar");
+    const [email , setEmail] = React.useState("");
+    const [senha , setSenha] = React.useState("");
+    const [ativarBotao, setAtivarBotao] = React.useState(false);
+    const {setUsuario} = React.useContext(UsuarioContext);
+
+    const navegar = useNavigate();
 
     async function tentarLogin() {
         
-        /* const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        } */
-        
-
         setCarregarLogin(<Loading/>);
+
+        
+            
+        const URL_LOGIN = "http://localhost:5000/";
+        const promise = axios.post(URL_LOGIN, {
+            email,
+            senha
+        });
+        promise.then((response) => {
+            const {data} = response;
+            setUsuario({token: data});
+            setTimeout(()=>{navegar("/paginaPrincipal")},5000);
+        });
+        promise.catch((error) => {
+            console.log(error.response);
+            alert("Dados Inválidos, Preencha Novamente!")
+            setAtivarBotao(false);
+            setCarregarLogin("Entrar");
+        })
+    
 
     }
 
     return(
         <Main>
             <Logo>MyWallet</Logo>
-            <Input type="text" placeholder="E-mail"/>
-            <Input type="password" placeholder="Senha"/>
+            <Input type="text" placeholder="E-mail" disable={ativarBotao} value={email} onChange={(e)=>setEmail(e.target.value)}/>
+            <Input type="password" placeholder="Senha" disable={ativarBotao} value={senha} onChange={(e)=>setSenha(e.target.value)}/>
             <Navegar to="/paginaPrincipal">
                 <Button onClick={tentarLogin}>
                     <p>{CarregarLogin}</p>
                 </Button>
             </Navegar>
-            <Cadastrar>
-                <Navegar to="/registrar" >
+            <Navegar to="/registrar" >
+                <Cadastrar>
                     <p>Primeira vez? Cadastre-se</p>
-                </Navegar>
-            </Cadastrar>
+                </Cadastrar>
+            </Navegar>
         </Main>
     )
 }

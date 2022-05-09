@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "axios";
-import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
+
+import styled from "styled-components";
 
 import Loading from "../Loading/Loading";
 
